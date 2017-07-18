@@ -5,8 +5,6 @@ var express = require('express');
 var path = require('path');
 //Logging requests/error handling
 var logger = require('morgan');
-//Allows cookies
-var cookieParser = require('cookie-parser');
 //Handling post requests
 var bodyParser = require('body-parser');
 //Connecting to rally database
@@ -23,23 +21,29 @@ var sendData = require('./routes/sendData');
 
 //Creat an instance
 var app = express();
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 // Creating path for views
 app.set('views', path.join(__dirname, 'views'));
 //Allowing dynamic html pages
 app.set('view engine', 'ejs');
 
-//Use libraries for that instance
+//Create a session for that instance
 app.use(session({
   cookieName: 'session',
-  secret: 'random_string_goes_here',
+  secret: 'secret',
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000,
 }));
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+
+//Set satic file path
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Displays the login page

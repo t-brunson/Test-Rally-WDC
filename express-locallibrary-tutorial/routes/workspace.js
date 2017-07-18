@@ -14,9 +14,9 @@ router.post('/',function(req,res,next){
     workspace.data.getWorkspaceID(req, ssn.workspacesJSON);
     console.log("Found Workspace ID");
     next();
-            });
+            },
 //Query for projects based on workspace
-router.post('/',function(req, res){
+function(req, res){
     //Get login info
     var rallyInfo= workspace.data.login(req,ssn.userName,ssn.userPassword);
     //Get projects based on workspace and then move to filter page

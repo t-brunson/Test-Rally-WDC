@@ -51,12 +51,10 @@ methods.workspace= function(rallyApi,req,res) {
         }
         //Save workspace JSON data
         workspacesJSON= result;
-        //Test to see if data was retreived  
-        //console.log(workspacesJSON.Results[1]._ref.substring(workspacesJSON.Results[1]._ref.lastIndexOf("/")+1, workspacesJSON.Results[1]._ref.length ));
-        //Set data for all routes
         ssn.workspacesJSON=workspacesJSON;
         //Dynamic display workspace view with user workspace data
         res.render("workspaceSelection", {Workspace: workspacesJSON});
+        console.log("User Results Retreived");
 });
 };
 exports.data =methods;

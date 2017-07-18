@@ -3,7 +3,6 @@ var urlencodedParser = bodyParser.urlencoded({extended: false});
 var rally = require('rally');
 var methods = {};
 var ssn;
-var sendData = require('../controllers/sendData');
 
 //Login user 
 methods.login =function(req, userName, password){
@@ -53,11 +52,12 @@ methods.getData = function(req,res,rallyApi,workspaceID, projectID){
         console.log("Start User Story Query");
         //User Story Query
         var hierarchicalrequirementJSON;
-        rallyApi.query({type: 'hierarchicalrequirement',
+rallyApi.query({type: 'hierarchicalrequirement',
         fetch: [//User Story Fields'
             'FormattedID','PlanEstimate','Rank','ScheduleState','Tags','Type','WorkState','AcceptedDate','IsTestable','Capability','RundDate','ObjectID','DirectChildrenCount','Name','Iteration','Parent','Owner','Release','c_type','Feature',
                 ],
-        scope: {workspace: '/workspace/'+ workspaceID, project: '/project/'+projectID}}, function(error, result) {if(error) {console.log(error);} 
+        scope: {workspace: '/workspace/'+ workspaceID, project: '/project/'+projectID}}, 
+    function(error, result) {if(error) {console.log(error);} 
         //Save Iteration JSON data
         hierarchicalrequirementJSON= result;
         //Set project object for other middleware
@@ -77,7 +77,7 @@ methods.getData = function(req,res,rallyApi,workspaceID, projectID){
         //Set project object for other middleware
         ssn.IterationJSON= IterationJSON;
         console.log('Iteration Query Completed');
-            });
+                                                                                                               
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
         console.log('Start Project Query');
         //Project Query
@@ -92,7 +92,7 @@ methods.getData = function(req,res,rallyApi,workspaceID, projectID){
         //Set project object for other middleware
         ssn.projectJSON= projectJSON;
         console.log('Project Query Completed');
-        });
+        
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
         console.log('Start Release Query');
         //Release Query
@@ -108,7 +108,7 @@ methods.getData = function(req,res,rallyApi,workspaceID, projectID){
         //Set project object for other middleware
         ssn.releaseJSON= releaseJSON;
         console.log('Release Query Completed');
-        });
+        
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
         console.log('Start Defect Query');
         //Defect Query
@@ -124,7 +124,7 @@ methods.getData = function(req,res,rallyApi,workspaceID, projectID){
         //Set project object for other middleware
         ssn.defectJSON= defectJSON;
         console.log('Defect Query Completed');
-        });
+        
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
         console.log('Start Task Query');
         //Task Query
@@ -140,7 +140,7 @@ methods.getData = function(req,res,rallyApi,workspaceID, projectID){
         //Set project object for other middleware
         ssn.taskJSON= taskJSON;
         console.log('Task Query Completed');
-        }); 
+        
 //----------------------------------------------------------------------------------------------------------------------------------------------------------//
         console.log('Start Portfolio Item Query');
         //Portfolio Item Query
@@ -157,11 +157,13 @@ methods.getData = function(req,res,rallyApi,workspaceID, projectID){
         //Set project object for other middleware
         ssn.portfolioItemJSON= portfolioItemJSON;
         console.log('Portfolio Item Query Completed');
-        //res.render("finish", {Project: ssn.projectsJSON, ProjectID: ssn.projectID,Workspace: ssn.workspacesJSON, WorkspaceID: ssn.workspaceID});
-        res.json({userStory: hierarchicalrequirementJSON,iteration: IterationJSON,project: projectJSON,release: releaseJSON,defect: defectJSON,task: taskJSON,portfolioItem:portfolioItemJSON});
-        sendData.data.createTableauConnection();
-        sendData.data.accessTableau();                                                                                                        
-                                                                                                               });                                                          
-                            });
+        res.render("sendData", {Project: ssn.projectsJSON, ProjectID: ssn.projectID,Workspace: ssn.workspacesJSON, WorkspaceID: ssn.workspaceID});
+    });
+                             });
+                        });
+                      }); 
+                     });  
+                   });
+                             });
 };
 exports.data =methods; 

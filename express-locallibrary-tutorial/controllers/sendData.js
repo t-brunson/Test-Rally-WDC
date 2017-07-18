@@ -1,16 +1,19 @@
 var bodyParser= require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var rally = require('rally');
+
 var methods = {};
 var ssn;
 
-methods.getAllData =function(req,res){
-    //res.send('Done');
-    res.json({userStory: ssn.hierarchicalrequirementJSON, iteration: ssn.IterationJSON, project: ssn.projectJSON, release: ssn.releaseJSON, defect: ssn.defectJSON, task: ssn.taskJSON, portfolioItem: ssn.portfolioItemJSON});
-};
+
 methods.createTableauConnection =function() {
+  
+    console.log("Create Connection");
+    
     var myConnector = tableau.makeConnector();
+    console.log(myConnector);
     // Creating Database Framework 
+    console.log("Create Schema");
     myConnector.getSchema = function (schemaCallback) {     
     //defining schemas to place data     
     var userStory_cols = [
@@ -362,6 +365,7 @@ methods.createTableauConnection =function() {
   schemaCallback([userStoryTabel, iterationTable, projectTable, releaseTable,defectTabel,taskTabel,portfolioItemTabel]);
 };
     //Pulling Data From Rally
+    console.log("Get Data");
     myConnector.getData = function(table, doneCallback) {
         //Setting Date
         var today = new Date();
@@ -757,6 +761,7 @@ console.log(Date.parse(todayTest));
 };
 
 methods.accessTableau =function() {
+    ssn = req.session; 
     tableau.connectionName = "Rally Data Import";
     tableau.submit();
     console.log("Connected to tableau");

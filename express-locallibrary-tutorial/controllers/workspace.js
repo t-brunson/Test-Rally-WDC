@@ -19,7 +19,7 @@ methods.login =function(req, userName, password){
         headers: {
             'X-RallyIntegrationName': 'Rally WDC',  
             'X-RallyIntegrationVendor': 'Trey Brunson',             
-            'X-RallyIntegrationVersion': '1.0'                    
+            'X-RallyIntegrationVersion': '1.0'                
         }
          
     }
@@ -29,10 +29,10 @@ methods.login =function(req, userName, password){
     console.log("Login Succesful");
     return restApi;
     
-}
+};
 //Get the selected workspace ID
 methods.getWorkspaceID = function(req,workspaceJSON){
-        console.log("Filter Started");
+        console.log("Getting User workspace");
         ssn = req.session;
     //Where the project results go
         var projectsJSON;
@@ -44,13 +44,11 @@ methods.getWorkspaceID = function(req,workspaceJSON){
         //Looping through Array to check value and find workspaceID
             workspace[0].Results.forEach(function(item){
                 if(item._refObjectName === workspaceResponse){
-    //Test to show workspace ID was gathered
-                    console.log("workspace ID below");
+                   //Workspace ID 
                     console.log(item._ref.substring(item._ref.lastIndexOf("/")+1, item._ref.length));
-                    var workspaceID= item._ref.substring(item._ref.lastIndexOf("/")+1, item._ref.length)
+                    var workspaceID= item._ref.substring(item._ref.lastIndexOf("/")+1, item._ref.length);
                      ssn.workspaceID=workspaceID;
-            }
-                
+            }   
             })
         };
 //Get projects based on selected workspace

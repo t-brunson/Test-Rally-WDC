@@ -12,14 +12,10 @@ router.post('/',function(req,res,next){
     projectID = project.data.getProjectID(req, ssn.projectsJSON);
     console.log("Found Project ID");
     next();
-            });
-//Query for projects based on workspace
-router.post('/',function(req, res){
-    ssn = req.session;
+            },
+    function(req, res){
     //Get login info
     var rallyInfo= project.data.login(req,ssn.userName,ssn.userPassword);
-    //Get project Id
-   
     //Get projects based on workspace and then move to filter page
     project.data.getData(req,res,rallyInfo,ssn.workspaceID,ssn.projectID);
           });

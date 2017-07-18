@@ -1,27 +1,22 @@
 var express = require('express');
 var router = express.Router();
 var session = require('express-session');
+var requireFromUrl = require('require-from-url');
+var sync = require('sync');
+
 // Require controller modules
-var sendData = require('../controllers/sendData');
 var ssn;
+
+
 /* GET home page. */
+router.get('/',function(req,res){
+    ssn = req.session; 
+    res.json({userStory: ssn.hierarchicalrequirementJSON, iteration: ssn.IterationJSON, project: ssn.projectJSON, release: ssn.releaseJSON, defect: ssn.defectJSON, task: ssn.taskJSON, portfolioItem: ssn.portfolioItemJSON});
+    console.log("Tabelau Requesting Data Request");
+})
 router.post('/', function(req, res,next) {
-    ssn = req.session;
-    console.log("Sending Data For Tableau");
-    sendData.data.getAllData(req,res);
-     console.log("Data Sent to Tableau");
-    next();
+    console.log("");
+   res.sendFile('index.html',{root: './public'})
 });
-router.post('/', function(req, res,next) {
-    console.log("Call Tableau");
-    sendData.data.createTableauConnection();
-    console.log("Tableau Connection Created");
-    next();
-});
-router.post('/', function(req, res) {
-    console.log("Call Tableau");
-    sendData.data.accessTableau();
-    console.log("Tableau Connection Created");
-    res.send("Done");
-});
+
 module.exports = router;
